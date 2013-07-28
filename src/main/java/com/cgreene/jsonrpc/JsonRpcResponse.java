@@ -105,6 +105,18 @@ final public class JsonRpcResponse {
         this.id = id;
     }
 
+    public Object getResult(){
+        return result;
+    }
+
+    public JsonRpcException getError(){
+        return error;
+    }
+
+    public Object getId(){
+        return id;
+    }
+
     /**
      * A convenience method to check if the response indicates success or failure of the request
      *
@@ -117,4 +129,5 @@ final public class JsonRpcResponse {
             return false;
         }
     }
+
 }

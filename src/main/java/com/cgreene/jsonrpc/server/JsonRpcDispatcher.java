@@ -2,9 +2,12 @@ package com.cgreene.jsonrpc.server;
 
 import com.cgreene.jsonrpc.JsonRpcRequest;
 import com.cgreene.jsonrpc.JsonRpcResponse;
+import com.cgreene.jsonrpc.exception.JsonRpcException;
 import com.cgreene.jsonrpc.exception.JsonRpcInternalErrorException;
+import com.cgreene.jsonrpc.exception.JsonRpcInvalidParamsException;
 import com.cgreene.jsonrpc.exception.JsonRpcMethodNotFoundException;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -37,8 +40,8 @@ final public class JsonRpcDispatcher {
      */
     public void register(final Object handler) throws JsonRpcInternalErrorException{
         LOGGER.log(Level.INFO,"#register(Object) - Entering");
-        Class<?> clazz = handler.getClass();
-        JsonRpcAnnotationScanner scanner = new JsonRpcAnnotationScanner(clazz);
+        final Class<?> clazz = handler.getClass();
+        final JsonRpcAnnotationScanner scanner = new JsonRpcAnnotationScanner(clazz);
         for(String methodName : scanner.getMethodsAsArray()){
             if(requestHandlers.containsKey(methodName)){
                 throw new JsonRpcInternalErrorException("Cannot register a duplicate JSON-RPC 2.0 handler for method", methodName);
@@ -63,17 +66,25 @@ final public class JsonRpcDispatcher {
      *
      * @param jsonRpcRequest The JSON-RPC 2.0 Request object
      * @return The result as a JSON-RPC 2.0 Response object
-     * @throws JsonRpcMethodNotFoundException If there is no register handler with method name in request
+     * @throws JsonRpcException If there issues process the request
      */
-    public JsonRpcResponse processRequest(final JsonRpcRequest jsonRpcRequest)throws JsonRpcMethodNotFoundException{
+    public JsonRpcResponse processRequest(final JsonRpcRequest jsonRpcRequest) throws JsonRpcException {
         LOGGER.log(Level.INFO,"#processRequest(JsonRpcRequest) - Entering");
+        // get registered handler from method name
         final String methodName = jsonRpcRequest.getMethod();
         final Object registeredHandler = getRequestHandler(methodName);
         if(registeredHandler == null){
             throw new JsonRpcMethodNotFoundException("No registered handler with that method name", methodName);
         }
-        // TODO: JsonRpcMethodInvoker
+        final JsonRpcMethodInvoker invoker = new JsonRpcMethodInvoker();
+        final JsonRpcAnnotationScanner scanner = new JsonRpcAnnotationScanner(registeredHandler.getClass());
+        final Method method = scanner.getMethod(methodName);
+        // build the parameters
+        final Object[] params = invoker.buildParameters(jsonRpcRequest.getParams(), method);
+        final String id = (String)jsonRpcRequest.getId();
+        // invoke the method
+        JsonRpcResponse jsonRpcResponse = invoker.invokeRequest(registeredHandler, method, id, params);
         LOGGER.log(Level.INFO,"#processRequest(JsonRpcRequest) - Exiting");
-        return null;
+        return jsonRpcResponse;
     }
 }

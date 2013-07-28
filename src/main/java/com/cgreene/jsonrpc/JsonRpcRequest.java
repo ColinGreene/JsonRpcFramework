@@ -24,7 +24,7 @@ final public class JsonRpcRequest {
      * Parameters
      */
     @JsonProperty("params")
-    private List<Object> params;
+    private List<String> params;
 
     /**
      * ID
@@ -52,7 +52,7 @@ final public class JsonRpcRequest {
      * @param params The parameters to pass the method
      * @throws JsonRpcInvalidParamsException If there was an issue setting the parameters
      */
-    public JsonRpcRequest(final String method, final Object id, final List<Object> params) throws JsonRpcInvalidParamsException{
+    public JsonRpcRequest(final String method, final Object id, final List<String> params) throws JsonRpcInvalidParamsException{
         setMethod(method);
         setId(id);
         setParams(params);
@@ -81,7 +81,7 @@ final public class JsonRpcRequest {
      *
      * @return The parameters as a List of Objects
      */
-    public List<Object> getParams(){
+    public List<String> getParams(){
         return params;
     }
 
@@ -116,9 +116,9 @@ final public class JsonRpcRequest {
      *
      * @param params The request parameters
      */
-    private void setParams(final List<Object> params){
+    private void setParams(final List<String> params){
         if(params == null){
-            this.params = new ArrayList<Object>(){};
+            this.params = new ArrayList<String>(){};
             return;
         }
         this.params = params;
