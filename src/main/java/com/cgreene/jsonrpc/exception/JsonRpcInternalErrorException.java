@@ -14,8 +14,8 @@ final public class JsonRpcInternalErrorException extends JsonRpcException{
      *
      * @param msg The error message
      */
-    public JsonRpcInternalErrorException(final String msg){
-        this(msg, null, null);
+    public JsonRpcInternalErrorException(final String msg, final Object data){
+        this(msg, data, null);
     }
 
     /**

@@ -7,5 +7,6 @@ package com.cgreene.jsonrpc;
  * Time: 12:24 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JsonRpcBaseServlet {
+abstract public class JsonRpcBaseServlet {
+    //TODO: Base Servlet
 }
