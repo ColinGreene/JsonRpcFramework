@@ -30,7 +30,7 @@ final public class JsonRpcRequest {
      * ID
      */
     @JsonProperty("id")
-    private Object id;
+    private String id;
 
     /**
      * Construct a new JSON-RPC 2.0 request object
@@ -39,7 +39,7 @@ final public class JsonRpcRequest {
      * @param id The id to be returned in the response
      * @throws JsonRpcInvalidParamsException If there was an issue setting the parameters
      */
-    public JsonRpcRequest(final String method, final Object id) throws JsonRpcInvalidParamsException{
+    public JsonRpcRequest(final String method, final String id) throws JsonRpcInvalidParamsException{
         setMethod(method);
         setId(id);
     }
@@ -52,7 +52,7 @@ final public class JsonRpcRequest {
      * @param params The parameters to pass the method
      * @throws JsonRpcInvalidParamsException If there was an issue setting the parameters
      */
-    public JsonRpcRequest(final String method, final Object id, final List<String> params) throws JsonRpcInvalidParamsException{
+    public JsonRpcRequest(final String method, final String id, final List<String> params) throws JsonRpcInvalidParamsException{
         setMethod(method);
         setId(id);
         setParams(params);
@@ -104,8 +104,8 @@ final public class JsonRpcRequest {
      * @param id The request identifier echoed back to the caller. Must not be null
      * @throws JsonRpcInvalidParamsException If the id is null and if its anything other than a Boolean/Number/String
      */
-    private void setId(final Object id) throws JsonRpcInvalidParamsException{
-        if(id != null && !(id instanceof Boolean) && !(id instanceof Number) && !(id instanceof String)){
+    private void setId(final String id) throws JsonRpcInvalidParamsException{
+        if(id != null && !(id instanceof String)){
             throw new JsonRpcInvalidParamsException("The request identifier must be non null and map to Boolean/Number/String");
         }
         this.id = id;

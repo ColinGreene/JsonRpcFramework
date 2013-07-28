@@ -26,4 +26,6 @@ public class JsonRpcDispatcherTest {
         assertEquals("Dispatcher has registered the class",dispatcher.getRequestHandler("toUpperCase").getClass(), handler.getClass());
     }
 
+
+
 }
