@@ -15,19 +15,20 @@ abstract public class JsonRpcException extends Exception{
      * Enum specifying the type of error that occurred. They have standardised error numbers.
      */
     @JsonProperty("code")
-    private JsonRpcErrorCode _code;
+    private JsonRpcErrorCode code;
 
     /**
      * Optional error data
      */
     @JsonProperty("data")
-    private Object _data;
+    private Object data;
 
     /**
      * Message from java.lang.Exception
      */
     @JsonProperty
-    private String _message;
+    private String message;
+
     /**
      * Init code and data and specify the message
      *
@@ -37,8 +38,8 @@ abstract public class JsonRpcException extends Exception{
      */
     protected JsonRpcException(final String msg, final JsonRpcErrorCode code, final Object data){
         super(msg);
-        _code = code;
-        _data = data;
+        this.code = code;
+        this.data = data;
     }
 
     /**
@@ -51,18 +52,33 @@ abstract public class JsonRpcException extends Exception{
      */
     protected JsonRpcException(final String msg, final JsonRpcErrorCode code, final Object data, final Throwable cause){
         super(msg, cause);
-        _code = code;
-        _data = data;
+        this.code = code;
+        this.data = data;
     }
 
+    /**
+     * Returns error code as enum JsonRpcErrorCode
+     *
+     * @return Error code
+     */
     public JsonRpcErrorCode getCode(){
-        return _code;
+        return code;
     }
 
+    /**
+     * Gets the extra data that has been passed
+     *
+     * @return Extra data as Object
+     */
     public Object getData(){
-        return _data;
+        return data;
     }
 
+    /**
+     * Gets the Message from java.lang.Exception
+     *
+     * @return Exception as String
+     */
     public String getMessage(){
         return super.getMessage();
     }

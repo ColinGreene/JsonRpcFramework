@@ -20,7 +20,7 @@ final public class JsonRpcDispatcher {
     /**
      * Map of request handlers as method/class pairs
      */
-    private Map _requestHandlers =  new HashMap<String, Object>();
+    private Map requestHandlers =  new HashMap<String, Object>();
 
     /**
      *  Register a new JSON-RPC 2.0 request handler

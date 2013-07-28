@@ -1,6 +1,7 @@
 package com.cgreene.jsonrpc.server;
 
 import com.cgreene.jsonrpc.annotation.JsonRpcMethod;
+import com.cgreene.jsonrpc.exception.JsonRpcMethodNotFoundException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -25,13 +26,13 @@ final public class JsonRpcAnnotationScanner {
     /**
      * Map that holds the annotated methods
      */
-    private Map<String, Method> _annotatedMethods;
+    private Map<String, Method> annotatedMethods;
 
     /**
      * Constructor that takes the type of the class to scan
      */
     public JsonRpcAnnotationScanner(Class<?> clazz){
-       _annotatedMethods = findAnnotatedMethods(clazz);
+       this.annotatedMethods = findAnnotatedMethods(clazz);
     }
 
     /**
@@ -58,14 +59,13 @@ final public class JsonRpcAnnotationScanner {
      * Gets the Method from the map
      *
      * @param methodName The name of the method
-     * @throws
      * @return The method as a Method object
      */
     public Method getMethod(final String methodName){
-        if(!_annotatedMethods.containsKey(methodName)){
-            //TODO: throw new JsonRpcMethodNotFoundException
+        if(!annotatedMethods.containsKey(methodName)){
+            return null;
         }
-        return _annotatedMethods.get(methodName);
+        return annotatedMethods.get(methodName);
     }
 
     /**
@@ -74,7 +74,7 @@ final public class JsonRpcAnnotationScanner {
      * @return String array of method names
      */
     public String[] getMethodsAsArray(){
-      return _annotatedMethods.keySet().toArray(new String[0]);
+      return annotatedMethods.keySet().toArray(new String[0]);
     }
 
     /**
