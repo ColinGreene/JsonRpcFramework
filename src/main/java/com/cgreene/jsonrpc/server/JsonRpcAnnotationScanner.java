@@ -74,7 +74,7 @@ final public class JsonRpcAnnotationScanner {
      * @return String array of method names
      */
     public String[] getMethodsAsArray(){
-      return (String[])_annotatedMethods.keySet().toArray();
+      return _annotatedMethods.keySet().toArray(new String[0]);
     }
 
     /**
@@ -86,7 +86,7 @@ final public class JsonRpcAnnotationScanner {
     private static boolean hasAnnotation(Method method){
        boolean hasAnnotation = false;
        for(Annotation annotation : method.getAnnotations()){
-           if(annotation.getClass() == JsonRpcMethod.class){
+           if(annotation instanceof JsonRpcMethod){
                 hasAnnotation = true;
                 break;
            }
